@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creative-web-img-deployment
+  namespace: creative
+spec:
+  selector:
+    matchLabels:
+      app: creative-web
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: creative-web
+    spec:
+      containers:
+        - name: creative-web
+          image: hazemhashem100/creative-web
+          ports:
+            - containerPort: 80
