@@ -9,16 +9,18 @@ pipeline {
         }
         stage('docker build image'){
             steps{
-                sh 'docker build . -f dockerfile -t hazemhashem100/demo1'
+                sh 'docker build -t hazemhashem100/demo1 .'
             }
         }
-        stage('ci') {
+        stage('push image to hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')])
-                sh '''
-                docker login -u ${USERNAME} -p ${PASSWORD}
-                docker push hazemhashem100/demo1
-                '''
+                withCredentials([string(credentialsId: 'dockerhup-pwd', variable: 'dockerhubpwd')]) {
+                    sh 'docker login -u hazemhashem100 -p ${dockerhubpwd}'
+                }
+                
+                
+                sh 'docker push hazemhashem100/demo1'
+                
             }
         }
         stage('cd'){
